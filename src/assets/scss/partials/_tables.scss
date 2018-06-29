@@ -1,0 +1,70 @@
+/*===================================================
+====================== TABLES =======================
+===================================================*/
+table.table {
+	line-height: normal;
+	width: 100%; 
+
+	th, td { padding: 8px 15px; }
+	th { font-size: 15px; }
+	td { font-size: 14px; }
+	thead { 
+		border-bottom: 2px solid $grey;
+		border-top: 2px solid $grey; 
+
+		&.nocenter th { text-align: left; }
+	}
+	tbody tr { border-bottom: 1px solid $grey; }
+
+
+	&.striped {
+		tbody tr:nth-child(2n) { background-color: $light-grey; }
+	}
+
+	&.bgheader {
+		background-color: $white;
+		border: 1px solid $grey;
+		border-bottom: 0;
+		border-collapse: separate;
+		border-radius: 5px;
+		overflow: hidden;
+
+		thead {
+			background-color: $regal-blue;
+			border: 0;
+
+			th { color: $white; }
+		}
+
+		td { border-bottom: 1px solid $grey; }
+	}
+
+	&.fcolor {
+		background-color: $regal-blue;
+		border-radius: 5px;
+		color: $white;
+		overflow: hidden;
+
+		thead, tbody tr { border: 1px solid rgba($white, .1); }
+
+		&.fcolor.striped {
+			tbody tr:nth-child(2n) { background-color: #3A546D !important; }
+		}
+	}
+
+	&.column {
+		thead { border: 0; }
+		th {
+			&:after { 
+				border-bottom: 2px solid $blue;
+				display: block;
+				content: "";
+				margin: 10px auto 0;
+				width: 100%; 
+			}
+			&:first-child { padding-left: 0; } 
+			&:last-child { padding-right: 0; } 
+		}
+		tbody tr { border: 0; }
+	}
+}

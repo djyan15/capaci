@@ -1,0 +1,78 @@
+/*===================================================
+==================== BREADCRUMBS ====================
+===================================================*/
+.bread-crumbs {
+	margin: -10px 0 30px;
+
+	ul { 
+		margin: 0; 
+		padding: 0; 
+
+		li {
+			border-right: 1px solid $blue; 
+			font-size: 14px;
+			line-height: normal;
+			list-style: none; 
+			display: inline-block;
+			padding: 0 7px 0 5px;
+
+			&:first-child { padding-left: 0; }
+			&:last-child { border: 0 }
+
+			a:hover { opacity: 0.8; }
+		}
+	}
+
+	&.arrow {
+		li { 
+			background-color: rgba($blue, .8);
+			border: 0;
+			border-radius: 0 1px 1px 0;
+			position: relative;
+			
+			a { 
+				color: $white; 
+				display: block;
+				padding: 6px 6px 6px 14px;
+				text-decoration: none; 
+
+				&:hover { opacity: 1; }
+			}
+
+			&:first-child { 
+				border-radius: 4px 0 0 4px; 
+				&:before { border: 0; width: 0; }
+			}
+
+			&:last-child { 
+				border-radius: 0 4px 4px 0; 
+				&:after { border: 0; width: 0; }
+			}
+
+			&:before {
+				content: "";
+				border: {
+					color: transparent transparent transparent rgba($white, .9);
+					style: solid;
+					width: 14px 0 14px 8px
+				}
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+
+			&:after {
+				content: "";
+				border: {
+					color: transparent transparent transparent rgba($blue, .8);
+					style: solid;
+					width: 14px 0 15px 8px
+				}
+				position: absolute;
+				right: -8px;
+				top: 0;
+				z-index: 1;
+			}
+		}
+	}
+}

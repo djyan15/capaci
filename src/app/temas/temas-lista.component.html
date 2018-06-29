@@ -1,0 +1,67 @@
+<header class="header-title">
+    <h2>Temas</h2>
+</header>
+
+<button class="green-btn go-to-form" routerLink="0"><i class="ion-plus"></i> Crear Tema</button>
+
+<form [formGroup]="busquedaForm" novalidate class="search-filter">
+    <div class="columns is-variable is-2">
+        <div class="column is-4">
+            <label class="caption">Tema:</label>
+            <input type="text" class="input form-input" formControlName="Tema_Titulo" placeholder="Buscar temas">
+        </div>
+        <div class="column buttons is-3">
+            <button (click)="buscarTemas()" class="primary-btn" matTooltip="Buscar" matTooltipPosition="below"><i class="ion-search"></i></button>
+            <button (click)="resetBuscar()" class="regal-blue-btn" matTooltip="Limpiar" matTooltipPosition="after"><i class="ion-refresh"></i></button>
+        </div>
+    </div>
+
+    <div id="filter-options" *ngIf="!vacio">
+        <div class="columns">
+            <div class="column" *ngIf="temas$">
+                <div class="amount"><span>{{ temaservices.filtro.Linea }} al {{ temaservices.filtro.Ultima_Linea }} de {{ temaservices.filtro.Cantidad_Registros }} registros</span></div>
+            </div>
+            <div class="column">
+                <div class="reg-amount">
+                    <span>Mostrar:</span>
+                    <ng-select [items]="registros" bindLabel="Text" bindValue="Value" [clearable]="false" [searchable]="false" formControlName="PageSize" (change)="filtrarPorOrden()">
+                    </ng-select>
+                    <span>Registros:</span>
+                </div>
+                <div class="recents">
+                    <ng-select [items]="orden" bindLabel="Text" bindValue="Value" [clearable]="false" [searchable]="false" formControlName="Orden" (change)="buscarTemas()">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="workshop">
+
+
+    <!-- no register -->
+    <div *ngIf="vacio" class="" role="alert">
+        <div class="no-register columns is-variable is-0">
+            <div class="column is-1">
+                <div class="icon"> <i class="ion-document"></i> <i class="ion-close-round"></i></div>
+            </div>
+            <div class="column is-8">No se encontró temas con "{{temaservices.filtro.Tema_Titulo}}"</div>
+        </div>
+    </div>
+    <!-- end no register -->
+
+    <mat-spinner *ngIf="loading" class="spinner" [diameter]="60"></mat-spinner>
+    <div class="list-block animated fadeIn" *ngFor="let tema of temas$ | async | paginate: { itemsPerPage: temaservices.filtro.PageSize, currentPage: temaservices.filtro.PageIndex, totalItems: temaservices.filtro.Cantidad_Registros }" [routerLink]="[tema.Tema_Numero]">
+        <div class="no-date">
+            <h4> {{tema.Tema_Titulo }} </h4>
+            <p>{{ tema.Tema_Descripcion }}</p>
+
+            <div class="legend">
+                <span><strong><i class="ion-android-time"></i> Duración:</strong> {{tema.Tema_Duracion_Minutos | tiempo}} </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<pagination-controls *ngIf="temaservices.filtro.Cantidad_Registros > 0 && temaservices.filtro.Cantidad_Registros > temaservices.filtro.PageSize  " class="my-pagination align-center" (pageChange)="temaservices.filtro.PageIndex = $event; getTemas()" previousLabel="" nextLabel="">
+</pagination-controls>

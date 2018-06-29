@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import 'https://fonts.googleapis.com/css?family=Lato:400,700|Roboto:400,700';
+
+
+
+.spinner{ margin: 0 auto; top:110px; }
+.spinner circle {  stroke:#1a4fa1 !important }
+
+/* Oculta los botones de limpiar y seleccionar en los datepickers */
+
+.headerclearbtn,
+.headerokbtn {
+    display: none;
+}
+    
+.ng-invalid.ng-touched:not(form) {
+    border: 1px solid red;
+}
+.resaltado {
+    color: green;
+}
+
+
+.errorForm > label{
+    color:#F44336 !important
+}
+
+.errorForm > div > select{
+    border-color: #F44336 !important;
+}
+
+.errorForm > div > label{
+    color: #F44336 !important;
+}
+
+.errorForm  label input{
+    border-color: #F44336 !important;
+}
+
+control-messages > div {
+    color: #F44336;
+    font-size: 13px;
+}
+
+/* .errorForm .ng-input > input{
+    color: #F44336 !important;
+} */
+
+
+/* .errorForm .ng-select.customSelect .ng-control:after,
+.errorForm.mui-textfield>input, .errorForm.mui-textfield>textarea { border-color: #F44336; } */

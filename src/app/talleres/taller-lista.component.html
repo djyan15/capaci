@@ -1,0 +1,190 @@
+  <header class="header-title">
+      <h2>Talleres</h2>
+  </header>
+  
+  <button class="green-btn go-to-form" routerLink="0"><i class="ion-plus"></i> Crear Taller</button>
+
+<!-- no register -->
+  <div class="no-register columns is-variable is-0" *ngIf="false">
+    <div class="column is-1">
+      <div class="icon"> <i class="ion-document"></i> <i class="ion-close-round"></i></div>
+    </div>
+    <div class="column is-8">Actualmente no existen registros en el sistema.<br/> Puede crear un nuevo taller al hacer clic en el botón de crear taller.</div>
+  </div>
+<!-- end no register -->
+  
+  <form [formGroup]="busquedaForm" novalidate class="search-filter">
+    <div class="columns is-variable is-2">      
+      <div class="column is-4">
+        <label class="caption">Taller:</label>
+        <input type="text" class="input form-input" formControlName="Taller_Titulo" placeholder="Buscar taller" >
+      </div>
+      <div class="column is-2" id="estado">
+        <label class="caption">Estado:</label>
+        <ng-select [items]="estados$ | async"
+            bindLabel="Taller_Estado_Descripcion"
+            bindValue="Taller_Estado_Numero"
+            [clearable]="false"
+            [searchable]="false"
+            formControlName="Taller_Estado_Numero"
+            (change)="filtrarPorOrden()">
+        </ng-select>     
+      </div>
+      <div class="column is-3 datepicker">
+        <label class="caption">Fecha:</label>
+        <my-date-range-picker name="mydaterange" [options]="sharedService.datePickerOptions" formControlName="myDateRange" (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>             
+      </div>
+      <div class="column buttons is-3">
+        <button (click)="buscarTaller()" class="primary-btn"><i class="ion-search"></i></button>
+        <button type="button" (click)="resetBuscar()" class="regal-blue-btn"><i class="ion-refresh"></i></button>
+      </div>
+    </div>
+      
+  <div id="filter-options" *ngIf="!vacio">
+    <div class="columns">
+      <div class="column" *ngIf="talleres$">
+        <div class="amount"><span>{{ tallerService.filtro.Linea }} al {{ tallerService.filtro.Ultima_Linea }} de {{ tallerService.filtro.Cantidad_Registros }} registros</span></div>
+      </div>
+      <div class="column">
+        <div class="reg-amount">
+          <span>Cant. de registros:</span>
+          <ng-select [items]="registros"
+            bindLabel="Text"
+            bindValue="Value"
+            [clearable]="false"
+            [searchable]="false"
+            formControlName="PageSize"
+            (change)="filtrarPorOrden()">
+          </ng-select>     
+        </div>
+        <div class="recents">      
+            <ng-select [items]="orden" 
+                      bindLabel="Text"
+                      bindValue="Value"
+                      [clearable]="false"
+                      [searchable]="false"
+                      formControlName="Orden"
+                      (change)="filtrarPorOrden()">
+            </ng-select>            
+        </div>
+      </div>    
+    </div>
+  </div>
+</form>
+
+  <div id="workshop">
+      <div *ngIf="vacio" class="" role="alert">
+          <div class="no-register columns is-variable is-0">
+              <div class="column is-1">
+                  <div class="icon"> <i class="ion-document"></i> <i class="ion-close-round"></i></div>
+              </div>
+              <div class="column is-8">No se encontró talleres con estos criterios</div>
+          </div>
+      </div>
+    <mat-spinner *ngIf="loading" class="spinner" [diameter]="60"></mat-spinner>
+    <div class="list-block animated fadeIn" *ngFor="let taller of talleres$ | async | paginate: { itemsPerPage: tallerService.filtro.PageSize, currentPage: tallerService.filtro.PageIndex, totalItems: tallerService.filtro.Cantidad_Registros }; index as i" [routerLink]="[taller.Taller_Numero]">
+      <div class="columns is-variable is-0">
+        <div class="column is-1 full-date" *ngIf="(taller.Taller_Fecha_Inicio | slice:6:10 ) > 1900">
+          <span class="date">{{ taller.Taller_Fecha_Inicio | slice:0:2 }}</span>
+          <span class="month">{{ sharedService.mesesArray[ +(taller.Taller_Fecha_Inicio | slice:3:5) - 1] }}</span>
+          <span class="year">{{ taller.Taller_Fecha_Inicio | slice:6:10 }}</span>
+        </div>
+        <div class="column is-1 full-date" *ngIf="(taller.Taller_Fecha_Inicio | slice:6:10 ) == 1900">
+          <span class="month">Sin</span>
+          <span class="month">Programar</span>
+        </div>
+        <div class="column">
+          <h4> {{ taller.Taller_Titulo }}</h4>
+          <p>{{ taller.Taller_Descripcion }}</p>
+  
+          <div class="legend">
+            <span><strong><i class="ion-person-stalker"></i> Participantes inscritos:</strong> {{taller.Participantes_Inscritos}}/{{taller.Taller_Cupos_Disponibles}}</span>
+            <span><strong><i class="ion-android-time"></i> Hora de inicio:</strong> {{ taller.Taller_Hora_Inicio }} </span>
+            <span><strong><i class="ion-android-time"></i> Duración:</strong> {{ taller.Taller_Duracion_Minutos | tiempo }} </span>
+            <span><strong><i class="ion-location"></i> Lugar:</strong> {{taller.Taller_Ubicacion}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  <pagination-controls class="my-pagination" *ngIf="tallerService.filtro.Cantidad_Registros > 0"
+    (pageChange)="tallerService.filtro.PageIndex = $event; getTalleres()"
+    previousLabel=""
+    nextLabel="">
+  </pagination-controls>
+
+
+
+  <!-- ================================================================================ -->
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+<br/>
+<form [formGroup]="busquedaForm" novalidate>
+<div class="row">
+  <div class="col-md-12">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" formControlName="Taller_Titulo" placeholder="Buscar taller" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button (click)="buscarTaller()" class="btn btn-outline-secondary" type="button">Button</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-md-9">       
+      <my-date-range-picker name="mydaterange" [options]="datePickerOptions" formControlName="myDateRange" (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>                 
+    </div>  
+    <div class="col-md-3">
+    <ng-select [items]="orden" 
+                bindLabel="Text"
+                bindValue="Value"
+                [clearable]="false"
+                [searchable]="false"
+                formControlName="Orden"
+                (change)="buscarTaller()">
+    </ng-select>
+  </div>
+</div>
+</form>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Título</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Participantes Inscritos</th>
+          <th scope="col">Ubicación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let taller of talleres">
+          <th scope="row">{{ taller.Taller_Fecha_Inicio }}</th>
+          <td>{{ taller.Taller_Titulo }}</td>
+          <td>{{ taller.Taller_Descripcion }}</td>
+          <td>{{ taller.Participantes_Inscritos }}</td>
+          <td>{{ taller.Taller_Ubicacion }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{{busquedaForm.value | json}} -->

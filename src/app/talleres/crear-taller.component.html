@@ -1,0 +1,259 @@
+<header class="header-title has-back clear middle">
+    <div class="pull-left">
+        <button type="button" (click)="regresar()"> <i class="ion-ios-arrow-back"></i></button>
+    </div>
+    <div class="pull-left"><h2>{{titulo}}
+        <span class="status" 
+        [ngClass]="{'open': taller?.Taller_Estado_Numero == 1, 
+        'finished': taller?.Taller_Estado_Numero == 3, 
+        'canceled': taller?.Taller_Estado_Numero == 4}">{{ taller?.Taller_Estado_Descripcion || 'Nuevo' }}</span>
+        </h2>
+    </div>
+</header>
+
+<div *ngIf="TallerCancelado" class="canceled-message">
+    <h3>Motivo de la cancelación:</h3>
+    <p>{{ taller?.Taller_Cancelacion_Motivo }}</p>
+</div>
+
+<form [formGroup]="crearTaller" class="middle" (ngSubmit)="SetTaller(crearTaller)">
+    <div class="block" [ngClass]="{'errorForm': crearTaller.controls.Taller_Titulo.touched && crearTaller.controls.Taller_Titulo.invalid}">
+        <label class="caption"><span class="required">*</span> Título:</label>
+        <input [attr.disabled]="TallerCancelado ? '' : null" minlength="5" formControlName="Taller_Titulo" name="Taller_Titulo" type="text" class="input form-input">
+        <control-messages [control]="crearTaller.controls.Taller_Titulo"></control-messages>
+    </div>
+    <div class="block" [ngClass]="{'errorForm': crearTaller.controls.Taller_Descripcion.touched && crearTaller.controls.Taller_Descripcion.invalid}">
+        <label class="caption"><span class="required">*</span> Descripción:</label>
+        <textarea [attr.disabled]="TallerCancelado ? '' : null" minlength="10" formControlName="Taller_Descripcion" name="Taller_Descripcion"  class="textarea form-input description"></textarea>
+        <control-messages [control]="crearTaller.controls.Taller_Descripcion"></control-messages>
+    </div>
+    <div class="columns no-marginB">
+        <div class="column is-4">
+            <label class="caption">Fecha:</label>
+            <div class="input-group data-range">
+                <input [attr.disabled]="TallerCancelado ? '' : null" (click)="dp.toggleCalendar()" class="input form-input" style="float:none" placeholder="Fecha de Inicio" ngx-mydatepicker 
+                 [options]="myOptions" #dp="ngx-mydatepicker" formControlName="Taller_Fecha_Inicio"/>
+                <i *ngIf="!TallerCancelado" class="ion-android-calendar" (click)="dp.toggleCalendar()"></i>
+            </div>
+        </div>      
+        <div class="column is-2" [ngClass]="{'errorForm': crearTaller.controls.Taller_Cupos_Disponibles.touched && crearTaller.controls.Taller_Cupos_Disponibles.invalid}">
+            <label class="caption"><span class="required">*</span> Cupo:</label>
+            <input [attr.disabled]="TallerCancelado ? '' : null" min="1" formControlName="Taller_Cupos_Disponibles" name="Taller_Cupos_Disponibles" type="number" class="input form-input">
+            <control-messages [control]="crearTaller.controls.Taller_Cupos_Disponibles"></control-messages>
+        </div>  
+        <div class="column">
+            <label class="caption"><span class="required">*</span> Taller visible para:</label>
+            <ng-select 
+                [items]="TiposUsuarios$ "
+                bindLabel="Usuario_Tipo_Publicar"
+                bindValue="Usuario_Tipo_Numero"
+                [clearable]="false"
+                [searchable]="false"
+                formControlName = "Usuario_Tipo_Numero"
+                [attr.disabled]="TallerCancelado ? '' : null">
+            </ng-select>
+        </div>
+    </div>
+
+    <div class="block inline">
+        <label class="caption form-chk">
+            <input [attr.disabled]="TallerCancelado ? '' : null" formControlName="Temas_checked" [value]=true  type="checkbox" name=""/>
+            <span class="elem"></span>Crear taller con múltiples temas
+        </label>
+    </div>
+
+    <div *ngIf="crearTaller.value.Temas_checked" id="list_of_topics" class="block">
+        <div *ngIf="crearTaller.controls.Temas.controls.length > 0" >
+            <label class="caption">Temas:</label>
+            <div class="search-box">
+                <input [attr.disabled]="TallerCancelado ? '' : null" formControlName="Busqueda_Temas" type="text" class="input">
+                <button class="primary-btn addons"><i class="ion-search"></i></button>
+            </div>
+        </div>
+
+        <div *ngIf="crearTaller.controls.Temas.controls.length > 0" class="columns is-multiline is-variable is-2" formArrayName="Temas">
+            <div *ngFor="let tema of crearTaller.get('Temas').controls | filtrar:crearTaller.value.Busqueda_Temas | paginate: { itemsPerPage: 10, currentPage: filtro.PageIndex }" class="column is-half">
+                <div [formGroupName]="crearTaller.get('Temas').controls.indexOf(tema)">
+                    <label class="form-chk">
+                        <input (click)="AgregarTemas(tema)" formControlName="Value" type="checkbox"/>{{ tema.controls.Tema_Titulo.value }}
+                        <span class="elem"></span>
+                    </label>
+                </div>
+            </div>            
+        </div>
+        <pagination-controls *ngIf="crearTaller.controls.Temas.controls.length >= 10" class="my-pagination" (pageChange)="filtro.PageIndex = $event" previousLabel="" nextLabel="">
+            previousLabel=""
+            nextLabel="">
+        </pagination-controls>
+
+        <!-- <label class="text-danger" *ngIf="crearTaller.controls.Temas.controls.length < 0">  No hay Temas disponibles, ¿desea crear uno?</label>
+        <span class="create_link open-modal" data-target="new-topic">[+] Crear nuevo tema</span> -->
+
+        <div *ngIf="Temas_seleccionadosControl.length > 0" class="selected_topics" formArrayName="Temas">
+            <label class="caption"><span> {{ Temas_seleccionadosControl.length }} </span> Temas seleccionados:</label>
+            <div *ngFor="let tema of crearTaller.get('Temas').controls; index as i">
+                <div [formGroupName]="i">
+                    <ul class="list" (click)="DeslistarTemas(tema)">
+                        <li *ngIf="tema.controls.Value.value > 0"><span class="delete-icon">x</span> {{ tema.controls.Tema_Titulo.value }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns no-marginB"> 
+        <div class="column" [ngClass]="{'errorForm': crearTaller.controls.Taller_Hora_Inicio.touched && crearTaller.controls.Taller_Hora_Inicio.invalid}">
+            <label class="caption">Hora de Inicio:</label>
+                <mat-form-field  class="full-width">
+                <input  [attr.disabled]="TallerCancelado ? '' : null" (click)="mypicker.open()" matInput type="text" [rbTimepicker]="mypicker" [military]="false" [(ngModel)]="Taller_Hora_Inicio" formControlName="Taller_Hora_Inicio">
+                <rb-timepicker  #mypicker></rb-timepicker>                
+                <span *ngIf="!TallerCancelado" class="clock-icon" (click)="mypicker.open()"><i class="ion-android-time"></i></span>                
+            </mat-form-field>
+        </div>       
+        <div class="column">
+            <label class="caption"><span class="required">*</span> Duración:</label>
+            <div class="columns is-variable is-1">
+                <div class="column">
+                    <ng-select 
+                        [items]="horas "
+                        [clearable]="false"
+                        [searchable]="false"
+                        formControlName="Taller_Duracion_Horas"
+                        (change)="Algo(crearTaller.controls.Taller_Duracion_Horas.value, crearTaller.controls.Taller_Duracion_Min.value,crearTaller.controls.Taller_Duracion_Horas_Refrigerio.value,crearTaller.controls.Taller_Duracion_Min_Refrigerio.value)">
+                    </ng-select> 
+                </div>
+                <div class="column">
+                    <ng-select 
+                        [items]="minutos "
+                        [clearable]="false"
+                        [searchable]="false"
+                        formControlName="Taller_Duracion_Min"
+                        (change)="Algo(crearTaller.controls.Taller_Duracion_Horas.value, crearTaller.controls.Taller_Duracion_Min.value,crearTaller.controls.Taller_Duracion_Horas_Refrigerio.value,crearTaller.controls.Taller_Duracion_Min_Refrigerio.value)">
+                    </ng-select>
+                </div>
+            </div>
+            <span *ngIf="crearTaller.value.Temas_checked" class="estimated-time">(Tiempo estimado: {{SDuracionMinutos}} horas)</span> 
+        </div>
+
+        <div class="column">
+            <label class="caption"><span class="required"></span> Tiempo refrigerio:</label>
+            <div class="columns is-variable is-1">
+                <div class="column">                    
+                    <ng-select 
+                        [items]="horas "
+                        [clearable]="false"
+                        [searchable]="false"
+                        formControlName="Taller_Duracion_Horas_Refrigerio"
+                        (change)="Algo(crearTaller.controls.Taller_Duracion_Horas.value, crearTaller.controls.Taller_Duracion_Min.value,crearTaller.controls.Taller_Duracion_Horas_Refrigerio.value,crearTaller.controls.Taller_Duracion_Min_Refrigerio.value)">
+                    </ng-select>                    
+                </div>
+                <div class="column">
+                    <ng-select 
+                        [items]="minutos "
+                        [clearable]="false"
+                        [searchable]="false"
+                        formControlName="Taller_Duracion_Min_Refrigerio"
+                        (change)="Algo(crearTaller.controls.Taller_Duracion_Horas.value, crearTaller.controls.Taller_Duracion_Min.value,crearTaller.controls.Taller_Duracion_Horas_Refrigerio.value,crearTaller.controls.Taller_Duracion_Min_Refrigerio.value)">
+                    </ng-select>
+                </div>            
+            </div>
+        </div>                  
+    </div>
+
+    <!-- <div  class="block">
+        <label class="caption">Adjuntar material del curso:</label>
+        <div class="upload_file input form-input">
+            <input [attr.disabled]="TallerCancelado ? '' : null" type="file" formControlName="Material"  value="Buscar" (change)="onFileChange($event)">
+             <span class="btn-searh primary-btn">Buscar</span> 
+             <div  class="file-name">Seleccione un archivo...</div>  
+        </div>        
+    </div> -->
+    <div id="attach-file" class="block" >
+        <label class="caption">Adjuntar material del curso:</label>        
+        <div class="columns is is-variable is-1">
+            <div class="column is-6">
+                <input formArrayName="Material" type="text" class="input form-input" placeholder="Nombre del archivo">
+            </div>
+            <div class="column">
+                <div class="upload_file input">
+                    <input type="file"    value="Buscar">   
+                    <div  class="file-name">Adjuntar archivo...</div>                      
+                    <span class="btn-searh primary-btn">Buscar</span>                  
+                </div>
+                <button type="button" class="red-btn sm-btn delete"></button>
+            </div>
+        </div>
+        <span (click)="AdjuntarMaterial(crearTaller.get('Material').controls)" class="create_link">[+] Agregar otro archivo</span>        
+    </div> 
+    <div formArrayName="Material" *ngFor="let Material of crearTaller.get('Material').controls; index as i" id="attach-file" class="block" >    
+        <div [formGroupName]="i" class="columns is is-variable is-1">
+            <div  class="column is-6">
+                <input formControlName="Recurso_Nombre"  type="text" class="input form-input" placeholder="Nombre del archivo">
+            </div>
+            <div   class="column">
+                <div  class="upload_file input">
+                    <input formControlName="Recurso" (change)="onFileChange($event)" type="file" >   
+                    <div  class="file-name">Adjuntar archivo...</div>                      
+                    <span class="btn-searh primary-btn">Buscar</span>                  
+                </div>
+                <button (click)="DeslistarMaterial(Material , i)" type="button" class="red-btn sm-btn delete"></button>
+            </div>
+        </div>       
+    </div>
+
+
+    
+
+    <div class="block" [ngClass]="{'errorForm': crearTaller.controls.Taller_Ubicacion.touched && crearTaller.controls.Taller_Ubicacion.invalid}">
+        <label class="caption label-for-radio"><span class="required">*</span> Lugar:</label>
+        <label class="form-rdb"><input formControlName="Taller_Ubicacion_Local" [value]="0" type="radio" (click)="DireccionLocal()"   /><span class="elem"></span>Local</label>
+        <label class="form-rdb"><input formControlName="Taller_Ubicacion_Local" [value]="1" type="radio" (click)="DireccionExterna()"   /><span class="elem"></span>Externo</label>
+        <textarea [attr.disabled]="TallerCancelado ? '' : null" minlength="5"   formControlName="Taller_Ubicacion" name="Taller_Ubicacion" class="textarea form-input"></textarea>
+        <control-messages [control]="crearTaller.controls.Taller_Ubicacion"></control-messages>
+    </div>    
+
+    <h3 class="total-duration">Duración Total: {{Stiempo}} horas  </h3>
+    <!-- hrs más {{crearTaller.controls.Taller_Duracion_Refrigerio.value | slice:3:5}} minutos de receso -->
+    <div class="btn-options">
+        <button *ngIf="!TallerCancelado" [disabled]="!crearTaller.valid" type="submit" class="primary-btn">Guardar</button>
+        <button type="button" class="regal-blue-btn" (click)="regresar()">Regresar</button>
+        <button *ngIf="Taller_Numero > 0 && !TallerCancelado" type="button" class="red-btn open-modal" data-target="cancel-workshop">Cancelar Taller</button>
+    </div>
+    {{crearTaller.value | json}}
+    {{archivo | json }}
+</form>
+
+<!-- modal cancelar taller -->
+<div id="cancel-workshop" class="modal-wrap">
+    <div class="modalbox">
+        <div class="modal-header">
+            <h2>Cancelar Taller</h2>
+            <button class="close-btn dismiss"><i class="ion-close"></i></button>
+        </div>
+        <form [formGroup]="formCancelarTaller" action="">
+            <div class="modal-body-content">
+                <span class="caption">Motivo:</span>
+                <textarea formControlName="Taller_Cancelacion_Motivo" class="textarea form-input"></textarea>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right">
+                    <button (click)="cancelarTaller()" [disabled]="formCancelarTaller.invalid" class="primary-btn dismiss">Confirmar</button>               
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- modal crear tema -->
+<div id="new-topic" class="modal-wrap">
+    <div class="modalbox">
+        <div class="modal-header">
+            <h2>Crear Tema</h2>
+            <button class="close-btn dismiss"><i class="ion-close"></i></button>
+        </div>
+
+        <div class="modal-body-content">
+            <!-- <app-temas></app-temas> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+/*===================================================
+==================== BREADCRUMBS ====================
+===================================================*/
+.progress-bar {
+	// background-color: #F9F9F9;
+	box-shadow: 0 0 6px rgba($black, .2) inset;
+	border-radius: 60px;
+	height: 22px;
+	margin-bottom: 5px;
+	overflow: hidden;
+	position: relative;
+	width: 250px;
+
+	.bar { 
+		@include transition(.6s);
+		background-color: $green;
+		box-shadow: 0 2px 0 rgba($white, .4) inset;
+		color: $white; 
+		font-size: 11px;
+		height: 100%;
+		line-height: 23px;
+		text-align: center;
+		width: 0; 
+	}
+
+}

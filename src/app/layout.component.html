@@ -1,0 +1,21 @@
+<div id="wrapper">   
+  <header id="main-nav">
+      <div class="container">
+        <div class="logo clear-float">
+          <img routerLink='/solicitudes' src="assets/img/logo_white.png" alt=""/> 
+          <h1 routerLink='/solicitudes'>Capacitaciones</h1>
+        </div>
+        <nav>
+          <ul class="list">
+            <!-- <li routerLinkActive="current"><a routerLink='/solicitudes'>Solicitudes</a></li> -->
+            <li routerLinkActive="current"><a (click)="temasService.resetFiltro()" routerLink='/temas'>Temas</a></li>
+            <li routerLinkActive="current"><a (click)="tallerService.resetFiltro()" routerLink='/talleres'>Talleres</a></li>
+          </ul>
+        </nav>
+      </div>
+  </header>
+
+  <div class="container">
+      <router-outlet></router-outlet>
+  </div>
+</div>

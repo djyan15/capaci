@@ -1,0 +1,111 @@
+/*===================================================
+==================== CONTAINERS =====================
+===================================================*/
+
+.basic-cont {
+	@include box-shadow(0 4px 5px 0 rgba(0,0,0,.14));
+	background-color: $white;
+	border-top: 1px solid rgba($grey, .5);
+	border-radius: 3px;
+	padding: 30px;
+}
+
+#content-page {
+	margin-top: 30px;
+    position: relative;
+    
+    .basic-cont { 
+		background-color: $white;
+		margin-bottom: 30px;
+		padding: 25px 30px 30px;
+	}
+
+	.back-page { 
+		background-color: $white; 
+		height: 50px;
+		left: -50%;
+		margin: 0 auto;
+		position: absolute;
+		right: -50%;
+		top: -14px;
+		width: 93%;
+		z-index: -1;
+	}
+}
+
+.cards {
+	
+	a { 
+		color: $black;
+		display: block;
+		text-decoration: none; 
+	}
+
+	.list {
+		@include box-shadow(0 4px 5px 0 rgba(0,0,0,.14));
+		border: 1px solid rgba($grey, .5);
+		border-bottom: 4px solid rgba($red, .8);
+		border-radius: 3px; 
+		background-color: $white;
+		margin-bottom: 10px; 
+		min-height: 250px;
+
+		&:hover {
+			.thumbnail img { @include transform(scale(1.5)); }
+			.thumbnail .title { opacity: 1 !important; visibility: visible !important; }
+		}
+
+		.thumbnail {
+			height: 140px;
+			overflow: hidden;
+			position: relative;
+
+			img { 
+				@include transition(.4s);
+				border-radius: 0;
+				display: block;
+				height: 100%;
+				left: -50%; 
+				margin: 0 auto;
+				right: -50%;
+				position: absolute;
+				top: 0; 
+				width: 100%;
+			}
+
+			.title { 
+				@include transition(.4s);
+				background-color: rgba(0, 0, 0, .8);
+				color: $white;
+				font-size: 12px;
+				font-style: italic;
+				height: 100%;
+				opacity: 0;
+				padding: 60px 10px 0;
+				position: absolute;
+				text-align: center;
+				top: 0;
+				visibility: hidden;
+				width: 100%; 
+
+				&:before, &:after {
+					border-top: 1px solid $white;
+					content: '';
+					display: inline-block;
+					height: 4px;					
+					width: 10px;
+				}
+
+				&:before { margin-right: 5px; }
+				&:after { margin-left: 5px; }
+			}
+		}
+
+		.content {
+			padding: 10px 15px;
+		
+			h4 { margin-bottom: 5px; }
+			p { font-size: 14px; margin: 0; }
+		}
+	}
+}

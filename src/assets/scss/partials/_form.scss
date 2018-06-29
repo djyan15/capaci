@@ -1,0 +1,214 @@
+/*===================================================
+=================== FORM ELEMENTS ===================
+===================================================*/
+// label { display: inline-block; margin: 0 15px 15px 0; }
+
+.form-input { display: block; width: 100% !important; }
+.form-label { display: block; font-size: 14px; font-weight: bold; }
+
+input:-webkit-autofill { padding-left: 16px !important; @include box-shadow ( 0 0 0px 1000px #fff inset); }
+
+/*BASICS*/
+.input {
+    background-color: $white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 40px;
+    margin-bottom: 15px;
+    padding: 0 12px;
+    position: relative;
+}
+
+// input[type="radio"], input[type="checkbox"] { margin-bottom: 15px; }
+
+.textarea { 
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block;
+    height: 80px; 
+    margin-bottom: 15px;
+    padding: 8px 12px; 
+}
+
+/*DISABLED ELEMENTS*/
+*:disabled {
+    cursor: not-allowed !important;
+    opacity: .6;
+}
+
+input:disabled, select:disabled, textarea:disabled { 
+    background-color: rgba($grey, .2);
+    opacity: .5;
+}
+
+/*ERROR STYLE*/
+.error, .error input, .error textarea, .error select { 
+    background-color: #FFF6DC !important; 
+    border-color: rgba($red, .7) !important; 
+    color: $red;
+}
+
+.search-box {
+    display: table;
+    margin-bottom: 30px;
+    width: 100%;
+
+    input, .addons { display: table-cell; vertical-align: top; }
+
+    input { 
+        border-radius: 4px 0 0 4px; 
+        margin-bottom: 0;
+        width: 250px; 
+    }
+
+    button.addons { border-radius: 0 4px 4px 0; padding: 8px 16px; }
+}
+
+//input file
+.upload_file {
+    padding: 0;
+    position: relative;
+
+    input { 
+        background: transparent;
+        cursor: pointer;
+        height: 100%;
+        opacity: 0;
+        position: relative;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .file-name {
+        left: 10px;
+        position: absolute;
+        top: 7px;        
+    }
+
+    .btn-searh {
+        font-size: 13px !important; 
+        padding: 4px 10px;
+        position: absolute;
+        right: 3px;
+        top: 3px;
+        z-index: 1;
+    }
+}
+
+/*RADIOBTN & CHECKBOX*/
+.form-chk { margin-bottom: 10px; }
+
+.form-chk, .form-rdb {
+    cursor: pointer;  
+    display: inline-block;  
+    position: relative;
+    margin: 0 15px 5px 0;
+
+    &:last-child { margin-right: 0; }
+
+    input { 
+        margin-right: 8px;
+        opacity: 0;
+
+        &:checked + span.elem {
+            border-color: $accent;
+
+            &:before { background-color: $accent; }
+        } 
+    }
+
+    &.form-rdb span.elem { 
+        border-radius: 20px; 
+
+        &:before { border-radius: 10px; }
+    }
+
+    span.elem {
+        @include transition(.1s);
+        background-color: $white;
+        border: 1px solid rgba($black, .4);
+        border-radius: 4px;
+        // box-shadow: 0 0 6px rgba($black, .2) inset;
+        display: block;
+        height: 16px;
+        left: 0;
+        padding: 2px;
+        position: absolute;
+        top: 5px;
+        width: 16px;
+
+        &:before {
+            @include transition(.1s);
+            background-color: transparent;
+            border-radius: 1px; 
+            display: block;
+            content: "";
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+/*SWITCH BUTTONS*/
+.switch {
+    cursor: pointer;
+    height: 30px;
+    position: relative;
+    width: 75px;
+
+    .switch-label {
+        @include transition(.3s);
+        background-color: rgba($grey, .4);
+        border: 1px solid rgba($black, .15);
+        border-radius: 20px;
+        display: block;
+        height: 100%;
+        position: relative;
+        width: 100%;
+
+        &:before, &:after {
+            @include transition(inherit);
+            color: rgba($black, .7);            
+            font-size: 14px;
+            position: absolute;
+            top: 2px;
+        }
+
+        &:before { 
+            color: $white; 
+            content: attr(data-on); 
+            opacity: 0;
+            left: 14px; 
+        }
+
+        &:after { content: attr(data-off); right: 14px; }
+    }
+
+    .switch-btn {
+        @include box-shadow(0 4px 5px 0 rgba(0,0,0,.14));
+        @include transition(All .2s ease);
+        background-color: $white;
+        border-radius: 20px;
+        display: block;
+        height: 80%;
+        left: 3px;
+        position: absolute;
+        top: 3px;
+        width: 24px;
+    }
+
+    .switch-input { 
+        left: 10px;
+        position: absolute; 
+        top: 10px;
+        visibility: hidden; 
+
+        &:checked ~ .switch-btn { 
+            left: 48px; 
+        }
+
+        &:checked + .switch-label:before { opacity: 1; }
+        &:checked + .switch-label:after { opacity: 0; }
+        &:checked + .switch-label { background-color: $green-sea; }
+    }
+}

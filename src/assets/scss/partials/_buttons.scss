@@ -1,0 +1,134 @@
+/*===================================================
+====================== BUTTONS ======================
+===================================================*/
+%ds-btn,  .flat-btn { 
+	border: 0;
+	border-radius: .2em; 
+	color: $white;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 16px;
+	outline: 0;
+	padding: 6px 14px; 
+	// vertical-align: bottom;
+	@include transition(.2s);
+	text-decoration: none;
+
+	&:hover { opacity: 0.9; text-decoration: none; }
+	&:active { opacity: 1; }
+}
+
+//flat buttons
+.flat-btn { 
+	background-color: transparent; 
+
+	&.default { color: $black; border: 1px solid rgba($black, .4); }
+	&.default:hover { background-color: rgba($grey, .5); }
+
+	&.blue { color: $blue; border: 1px solid $blue; }
+	&.blue:hover { background-color: $blue; color: $white; }
+	&.red { color: $red; border: 1px solid $red; }
+	&.red:hover { background-color: $red; color: $white; }
+	&.orange { color: $orange; border: 1px solid $orange; }
+	&.orange:hover { background-color: $orange; color: $white; }
+	&.green { color: $green; border: 1px solid $green; }
+	&.green:hover { background-color: $green; color: $white; }
+	&.violet { color: $violet; border: 1px solid $violet; }
+	&.violet:hover { background-color: $violet; color: $white; }
+	&.regal-blue { color: $regal-blue; border: 1px solid $regal-blue; }
+	&.regal-blue:hover { background-color: $regal-blue; color: $white; }
+	&.green-sea { color: $green-sea; border: 1px solid $green-sea; }
+	&.green-sea:hover { background-color: $green-sea; color: $white; }
+}
+
+//rounded buttons
+.rounded { 
+	border: none !important;
+	border-radius: 3em; 
+	padding: 6px 26px; 
+
+	&.sm-btn { padding: 0px 14px; }
+	&.lg-btn { padding: 10px 34px; }
+}
+
+//circle buttons
+.circle { 
+	border-radius: 50%; 
+	font-size: 22px !important;
+	height: 45px;
+	padding: 0;
+	text-align: center;
+	width: 45px;
+
+	.sm-btn {
+		font-size: 15px !important;
+		height: 30px; 
+		width: 30px;
+	}
+
+	.lg-btn { 
+		font-size: 26px !important;
+		height: 60px; 
+		width: 60px;
+	}
+}
+
+//Raised buttons
+.raised { 
+	@include transition(none); 
+	border-width: 0 0 4px !important; 
+	position: relative;
+
+	&:active { 
+		border: 0; 
+		@include box-shadow(2px 2px 4px rgba(0, 0, 0, 0.3) inset);
+		border: 0;
+		top: 4px;
+	}
+}
+
+//size buttons
+.sm-btn { 
+	font-size: 13px !important; 
+	padding: 2px 8px; 
+
+	i { font-size: 15px !important; }
+}
+
+.lg-btn { font-size: 20px !important; padding: 14px 28px; }
+
+//button group
+.group-buttons {
+
+	&.sm-btn, &.lg-btn { padding: 0; }
+	&.sm-btn { button, a, input { font-size: 13px !important; padding: 2px 8px; } }
+	&.lg-btn { button, &.lg-btn a, &.lg-btn input { font-size: 20px !important; padding: 14px 28px; } }
+
+	button { 
+		border-radius: 0;
+		border-right-width: 0;
+		margin-right: -3px; 
+
+		&:first-child { border-radius: .2em 0 0 .2em; }
+		&:last-child { border-radius: 0 .2em .2em 0; border-right-width: 1px; }
+		&.default-btn:hover { color: $blue; }
+	}
+}
+
+//Colors
+.default-btn { @extend %ds-btn; background-color: $white; border: 1px solid $grey; color: $black; }
+.default-btn:hover { background-color: #FDFDFD; }
+.green-btn { @extend %ds-btn; background-color: rgba($green, .92); }
+.primary-btn { @extend %ds-btn; background-color: $primary;}
+.orange-btn { @extend %ds-btn; background-color: rgba($orange, .92);  }
+.red-btn { @extend %ds-btn; background-color: $red; }
+.violet-btn { @extend %ds-btn; background-color: rgba($violet, .92); }
+.regal-blue-btn { @extend %ds-btn; background-color: $regal-blue; }
+.green-sea-btn { @extend %ds-btn; background-color: rgba($green-sea, .92); }
+// -----------------------------------------------------------------------------------------------------
+.social-btn-tt { @extend %ds-btn; background-color: $twitter; }
+.social-btn-fb { @extend %ds-btn; background-color: $facebook; }
+.social-btn-gg { @extend %ds-btn; background-color: $google; }
+.social-btn-ig { @extend %ds-btn; background-color: $instagram; }
+.social-btn-pt { @extend %ds-btn; background-color: $pinterest; }
+.social-btn-yt { @extend %ds-btn; background-color: $youtube; }

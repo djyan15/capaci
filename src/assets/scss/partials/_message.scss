@@ -1,0 +1,77 @@
+/*===================================================
+===================== MESSAGES ======================
+===================================================*/
+%alert {
+	border-radius: 4px;
+	font-size: 15px;
+	margin-bottom: 20px;
+	overflow: hidden;
+
+	h4.head-message { 
+		color: $white;
+		font-weight: normal;
+		margin: 0; 
+		padding: 3px 15px;
+	}
+
+	p { margin: 0; padding: 10px 15px; }
+}
+
+.blue-alert {
+	@extend %alert;
+	background-color: rgba($blue, .1);
+	border: 1px solid rgba($blue, .7);
+	color: $blue;
+
+	h4 { background-color: rgba($blue, .7); }
+}
+
+.green-alert {
+	@extend %alert;
+	background-color: rgba($green, .1);
+	border: 1px solid rgba($green, .7);
+	color: $green;
+
+	h4 { background-color: rgba($green, .7); }
+}
+
+.orange-alert {
+	@extend %alert;
+	background-color: rgba($orange, .1);
+	border: 1px solid rgba($orange, .7);
+	color: $orange;
+
+	h4 { background-color: rgba($orange, .7); }
+}
+
+.red-alert {
+	@extend %alert;
+	background-color: rgba($red, .1);
+	border: 1px solid rgba($red, .9);
+	color: $red;
+
+	h4 { background-color: rgba($red, .9); }
+}
+
+%dialog {
+	background-color: $white;
+	border: 1px solid;
+	border-left-width: 6px;
+	border-radius: 4px;
+	margin: 20px 0;
+	padding: 15px;
+
+	h3 { margin: 0 0 10px }
+
+	p { margin: 0; }
+}
+
+.blue-dialog { @extend %dialog; border-color: $blue; }
+.midnight-blue-dialog { @extend %dialog; border-color: $midnight-blue; }
+.green-dialog { @extend %dialog; border-color: $green; }
+.green-sea-dialog { @extend %dialog; border-color: $green-sea; }
+.orange-dialog { @extend %dialog; border-color: $orange; }
+.red-dialog { @extend %dialog; border-color: $red; }
+.silver-dialog { @extend %dialog; border-color: $silver; }
+.violet-dialog { @extend %dialog; border-color: $violet; }
+.yellow-dialog { @extend %dialog; border-color: $yellow; }

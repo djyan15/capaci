@@ -1,0 +1,18 @@
+@mixin prefixer($property, $value, $prefixes: webkit moz ms o) {
+  #{$property}: #{$value};
+  @each $prefix in $prefixes {
+    #{'-' + $prefix + '-' + $property}: #{$value};
+  }
+}
+
+@mixin box-shadow($value) {
+  @include prefixer(box-shadow, $value);
+}
+
+@mixin transition($value) {
+  @include prefixer(transition, $value);
+}
+
+@mixin transform($value) {
+  @include prefixer(transform, $value);
+}

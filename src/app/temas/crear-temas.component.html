@@ -1,0 +1,112 @@
+<header class="header-title has-back clear">
+    <div class="pull-left">
+        <button type="button" (click)="regresar()"> <i class="ion-ios-arrow-back"></i></button>
+    </div>
+    <div class="pull-left">
+        <h2>{{ titulo }}</h2>
+    </div>
+</header>
+
+<form [formGroup]="crearTemas" class="middle">
+    <input name="Tema_Numero" type="hidden" class="input form-input">
+    <div class="block" [ngClass]="{'errorForm': crearTemas.controls.Tema_Titulo.touched && crearTemas.controls.Tema_Titulo.invalid}">
+        <label class="caption"><span class="required">*</span> Título:</label>
+        <input formControlName="Tema_Titulo" name="Tema_Titulo" type="text" class="input form-input">
+        <control-messages [control]="crearTemas.controls.Tema_Titulo"></control-messages>
+    </div>
+    <div class="block" [ngClass]="{'errorForm': crearTemas.controls.Tema_Descripcion.touched && crearTemas.controls.Tema_Descripcion.invalid}">
+        <label class="caption"><span class="required">*</span> Descripción:</label>
+        <textarea formControlName="Tema_Descripcion" name="Tema_Descripcion" class="textarea form-input description"></textarea>
+        <control-messages [control]="crearTemas.controls.Tema_Descripcion"></control-messages>
+    </div>
+
+    <!-- <div id="attach-file" class="block">
+        <label class="caption">Adjuntar material del curso:</label>
+        <div class="columns is is-variable is-1">
+            <div class="column is-6">
+                <input type="text" class="input form-input" placeholder="Nombre del archivo">
+            </div>
+            <div class="column">
+                <div class="upload_file input">
+                    <input type="file" formArrayName="Material" value="Buscar">
+                    <div class="file-name">Adjuntar archivo...</div>
+                    <span class="btn-searh primary-btn">Buscar</span>
+
+                </div>
+                <button type="button" class="red-btn sm-btn delete"></button>
+            </div>
+        </div>
+        <span (click)="AdjuntarMaterial(crearTemas.get('Material').controls)" class="create_link">[+] Agregar otro archivo</span>
+    </div> -->
+    <div id="attach-file" class="block">
+        <div class="columns is is-variable is-1">
+            <div class="column is-6">
+                <input type="text" class="input form-input" placeholder="Nombre del archivo">
+            </div>
+            <div class="column">
+                <div class="upload_file input">
+                    <input type="file" value="Buscar">
+                    <div class="file-name">Adjuntar archivo...</div>
+                    <span class="btn-searh primary-btn">Buscar</span>
+                </div>
+                <button type="button" class="red-btn sm-btn delete"></button>
+            </div>
+        </div>
+        <span (click)="AdjuntarMaterial(crearTemas.get('Material').controls)" class="create_link">[+] Agregar otro archivo</span>
+    </div>
+    <div formArrayName="Material" *ngFor="let Material of crearTemas.get('Material').controls; index as i" id="attach-file" class="block">
+        <div class="columns is is-variable is-1">
+            <div class="column is-6">
+                <input [formGroupName]="i" type="text" class="input form-input" placeholder="Nombre del archivo">
+            </div>
+            <div class="column">
+                <div class="upload_file input">
+                    <input type="file" value="Buscar">
+                    <div class="file-name">Adjuntar archivo...</div>
+                    <span class="btn-searh primary-btn">Buscar</span>
+                </div>
+                <button (click)="DeslistarMaterial(Material , i)" type="button" class="red-btn sm-btn delete"></button>
+            </div>
+        </div>
+    </div>
+    <div class="block" [ngClass]="{'errorForm': crearTemas.controls.Tema_Duracion_Minutos.touched && crearTemas.controls.Tema_Duracion_Minutos.invalid}">
+        <div class="column">
+            <label class="caption"><span class="required">*</span> Duración:</label>
+            <div class="columns is-variable is-1">
+                <div class="column">
+                    <ng-select [items]="horas" [clearable]="false" [searchable]="false" formControlName="Temas_Duracion_Horas">
+                    </ng-select>
+                </div>
+                <div class="column">
+                    <ng-select [items]="minutos" [clearable]="false" [searchable]="false" formControlName="Temas_Duracion_Min">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-options ">
+        <button [disabled]="!crearTemas.valid " type="button " (click)=GuardarTemas(crearTemas) class="primary-btn ">Guardar</button>
+        <button type="button " (click)=regresar() class="regal-blue-btn ">Regresar</button>
+        <button *ngIf="edit " type="button " data-target="cancel-workshop" class="red-btn open-modal ">Eliminar</button>
+    </div>
+
+</form>
+<!-- modal eliminar tema -->
+<div id="cancel-workshop" class="modal-wrap">
+    <div class="modalbox">
+        <div class="modal-header">
+            <h2>Eliminar Tema</h2>
+            <button class="close-btn dismiss"><i class="ion-close"></i></button>
+        </div>
+
+        <span class="caption" style="margin-left:30px">¿Estás seguro que desea eliminar este Tema? </span>
+
+        <div class="modal-footer">
+            <div class="pull-right">
+                <button (click)="borrarTema()" class="primary-btn dismiss">Confirmar</button>
+                <button class="default-btn dismiss close-btn ">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>

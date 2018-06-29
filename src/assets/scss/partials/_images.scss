@@ -1,0 +1,57 @@
+/*===================================================
+====================== IMAGES =======================
+===================================================*/
+img {
+	border-radius: 3px;
+	display: inline-block;
+	height: 110px;
+	overflow: hidden;
+	position: relative;
+	width: 120px;
+
+	//sizes
+	&.small { height: 60px; width: 70px; }
+	&.medium { height: 160px; width: 170px; }
+	&.large { height: 210px; width: 220px; }
+
+	&.border {
+		background-color: $white;
+		border: 1px solid #C1C1C1;
+		padding: 4px;
+	}
+
+	&.circle { 
+		border-radius: 50% !important; 
+		height: 110px;
+		overflow: hidden;
+		width: 110px;
+
+		&.small { height: 50px; width: 50px }
+		&.medium { height: 150px; width: 150px }
+		&.large { height: 200px; width: 200px }
+
+		img { border-radius: 100px; }
+	}
+
+	&.pull-left { margin: 0 15px 15px 0; }
+	&.pull-right { margin: 0 0 15px 15px; }
+}
+
+.image-block {
+	display: inline-block;
+	position: relative;
+
+	img { display: block; margin: 0 !important; }
+
+	.image-label { 
+		background-color: rgba($black, .7);
+		bottom: 0;
+		color: $white;
+		display: block;
+		font-size: 14px;
+		line-height: normal;
+		padding: 5px 10px;
+		position: absolute; 
+		width: 100%;
+	}
+}
